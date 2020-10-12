@@ -1,8 +1,4 @@
-import React from 'react'
-import { css as cssExtractor } from '@theme-ui/css'
-import { css } from 'emotion'
-import { pickCSSProps } from './util'
-// import { useDefaultProps } from './useDefaultProps'
+import { forwardRef, createElement, memo } from 'react'
 
 export function createComponent<Props>(
   Component: React.FunctionComponent<Props>,
@@ -19,24 +15,22 @@ export function createComponent<Props>(
     memoize?: boolean
   }
 ): any {
-  const Comp = (props: React.PropsWithChildren<Props>, ref: React.Ref<any>) => {
-    // const { props: newProps } = useDefaultProps(props, config);
-
-    // TODO get theme props (passing props)
-    return React.createElement(
+  const FlushComponent = (
+    props: React.PropsWithChildren<Props>,
+    ref: React.Ref<any>
+  ) => {
+    return createElement(
       Component,
       { ...props, elementRef: ref },
       props?.children
     )
   }
 
-  let ForwardedComponent = React.forwardRef(Comp)
+  let ForwardedFlushComponent = forwardRef(FlushComponent)
 
   if (config.memoize) {
-    ForwardedComponent = React.memo(ForwardedComponent)
+    ForwardedFlushComponent = memo(ForwardedFlushComponent)
   }
 
-  Comp.dislayName = config.attach.displayName
-
-  return Object.assign(ForwardedComponent, config.attach)
+  return Object.assign(ForwardedFlushComponent, config.attach)
 }

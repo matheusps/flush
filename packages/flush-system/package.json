@@ -2,7 +2,7 @@
   "name": "flush-system",
   "version": "0.0.0",
   "main": "dist/index.js",
-  "module": "dist/base-ui.esm.js",
+  "module": "dist/flush-system.esm.js",
   "typings": "dist/index.d.ts",
   "publishConfig": {
     "access": "public",
@@ -34,6 +34,7 @@
     "focus-visible": "^5.1.0",
     "reakit": "^1.2.5",
     "tiny-invariant": "^1.1.0",
-    "tiny-warning": "^1.0.3"
+    "tiny-warning": "^1.0.3",
+    "deepmerge": "^4.2.2"
   }
 }
