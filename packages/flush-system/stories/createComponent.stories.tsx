@@ -26,27 +26,17 @@ export const WithSx: Story = () => {
   )
 }
 
-export const Variant: Story = () => {
+export const SxProps: Story = () => {
   return (
     <ThemeProvider>
-      <Box sx={{ 'button + button': { marginLeft: 1 } }}>
-        <Box
-          sx={{
-            variant: 'button.primary',
-          }}
-          use={'button'}
-        >
-          Primary Button
-        </Box>
-        <Box
-          sx={{
-            variant: 'button.secondary',
-          }}
-          use={'button'}
-          onClick={() => console.log('clicked')}
-        >
-          Secondary Button
-        </Box>
+      <Box
+        bg="primary"
+        color="source.light"
+        borderRadius={4}
+        fontSize={64}
+        sx={{ bg: 'secondary' }}
+      >
+        Primary Box
       </Box>
     </ThemeProvider>
   )

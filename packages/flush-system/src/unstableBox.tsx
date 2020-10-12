@@ -4,8 +4,9 @@ import { createComponent } from './createComponent'
 import { createHook } from './createHook'
 import { createElement } from './createElement'
 
-import { omitCSSProps, pickHTMLProps, mergeRefs } from './util'
+import { omitCSSProps, pickHTMLProps, mergeRefs, compose } from './util'
 import { SxStyleProp } from '@theme-ui/core'
+import { useCx } from './useCx'
 
 type ComponentType<R> = React.ComponentType<R> & { useProps: any }
 
@@ -21,15 +22,10 @@ export type BoxProps = Omit<ReakitBoxProps, 'sx'> &
   LocalBoxProps & { sx?: SxStyleProp }
 
 const useProps = createHook<BoxProps>((
-  _props /*, { disableCSSProps, themeKey } */
+  props /*, { disableCSSProps, themeKey } */
 ) => {
-  let props = _props
-  const { use } = props
-
-  if (use && typeof use !== 'string' && use.useProps) {
-    const newProps = use.useProps({ ...props, use: undefined })
-    props = { ...props, ...newProps }
-  }
+  const compoundProps = compose(props)
+  const className = useCx(compoundProps)
 
   // Convert CSS props to an object.
   // Example input:
@@ -57,17 +53,17 @@ const useProps = createHook<BoxProps>((
 
   // Pick out and invalid HTML props & omit the CSS props.
   // This avoids strange dom props
-  const htmlProps = omitCSSProps(pickHTMLProps(props))
+  const htmlProps = omitCSSProps(pickHTMLProps(compoundProps))
 
-  const ref = props.elementRef ?? {
-    ref: mergeRefs(props.elementRef, props.ref),
+  const ref = compoundProps.elementRef ?? {
+    ref: mergeRefs(compoundProps.elementRef, compoundProps.ref),
   }
 
-  const wrapElement = props.wrapElement ?? {
-    wrapElement: props.wrapElement,
+  const wrapElement = compoundProps.wrapElement ?? {
+    wrapElement: compoundProps.wrapElement,
   }
 
-  return { ...htmlProps, ...ref, ...wrapElement }
+  return { ...htmlProps, className, ...ref, ...wrapElement }
 })
 
 export const Box = createComponent<BoxProps>(

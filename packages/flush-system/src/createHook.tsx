@@ -1,5 +1,6 @@
 // import { useDefaultProps } from './useDefaultProps'
-import { useThemeProps } from './useThemeProps'
+// import { useThemeProps } from './useThemeProps'
+// import { pickCSSProps } from './util'
 
 export function createHook<P>(
   useHook: (
@@ -12,7 +13,6 @@ export function createHook<P>(
     props: Partial<P>
     // { disableCSSProps = [], themeKey: themeKeyOverride = undefined } = {}
   ) => {
-    const themedProps = useThemeProps(props)
-    return useHook(themedProps as any)
+    return useHook(props)
   }
 }

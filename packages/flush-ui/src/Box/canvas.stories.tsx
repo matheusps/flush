@@ -94,3 +94,13 @@ export const CustomTheme: Story = () => {
     </ThemeProvider>
   )
 }
+
+export const StyleProps: Story = () => {
+  return (
+    <ThemeProvider>
+      <Box bg="primary" color="source.light" borderRadius={4} fontSize={64}>
+        Primary Box
+      </Box>
+    </ThemeProvider>
+  )
+}

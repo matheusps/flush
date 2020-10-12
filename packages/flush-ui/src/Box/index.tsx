@@ -8,6 +8,8 @@ import {
   omitCSSProps,
   pickHTMLProps,
   mergeRefs,
+  useCx,
+  compose,
 } from 'flush-system'
 
 type ComponentType<R> = React.ComponentType<R> & { useProps: any }
@@ -24,53 +26,22 @@ export type BoxProps = Omit<ReakitBoxProps, 'sx'> &
   LocalBoxProps & { sx?: SxStyleProp }
 
 const useProps = createHook<BoxProps>((
-  _props /*, { disableCSSProps, themeKey } */
+  props /*, { disableCSSProps, themeKey } */
 ) => {
-  let props = _props
-  const { use } = props
+  const compoundProps = compose(props)
+  const className = useCx(compoundProps)
 
-  if (use && typeof use !== 'string' && use.useProps) {
-    const newProps = use.useProps({ ...props, use: undefined })
-    props = { ...props, ...newProps }
+  const htmlProps = omitCSSProps(pickHTMLProps(compoundProps))
+
+  const ref = compoundProps.elementRef ?? {
+    ref: mergeRefs(compoundProps.elementRef, compoundProps.ref),
   }
 
-  // Convert CSS props to an object.
-  // Example input:
-  // props = { color: 'red', backgroundColor: 'blue', isEnabled: true }
-  //
-  // Example output:
-  // style = { color: 'red', backgroundColor: 'blue' }
-  // const style = useStyle(props, { disableCSSProps })
-
-  // Append the styles from above as a className on the DOM element (with precedence).
-  // let className = useClassName({
-  //   style: styles.style,
-  //   styleProps: { ...props, style },
-  //   themeKey,
-  //   prevClassName: props.className,
-  // })
-
-  // Append the Box styles as a className on the DOM element.
-  // className = useClassName({
-  //   style: styles.Box,
-  //   styleProps: props,
-  //   prevClassName: className,
-  //   themeKey,
-  // })
-
-  // Pick out and invalid HTML props & omit the CSS props.
-  // This avoids strange dom props
-  const htmlProps = omitCSSProps(pickHTMLProps(props))
-
-  const ref = props.elementRef ?? {
-    ref: mergeRefs(props.elementRef, props.ref),
+  const wrapElement = compoundProps.wrapElement ?? {
+    wrapElement: compoundProps.wrapElement,
   }
 
-  const wrapElement = props.wrapElement ?? {
-    wrapElement: props.wrapElement,
-  }
-
-  return { ...htmlProps, ...ref, ...wrapElement }
+  return { ...htmlProps, className, ...ref, ...wrapElement }
 })
 
 export const Box = createComponent<BoxProps>(

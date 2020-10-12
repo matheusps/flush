@@ -8,6 +8,18 @@ export const isObjectEmpty = (obj: any) => Object.keys(obj).length === 0 && obj.
 
 const omitProps = ['focusable', 'spacing', 'size', 'kind', 'variant', 'orientation', 'wrap', 'colorMode'];
 
+export function compose(params: any) {
+  const { use, ...props } = params
+
+  if (!use || typeof use === 'string' || !use.useProps) {
+    return props
+  }
+
+  const enhancedProps = use.useProps({ ...props, use: undefined })
+
+  return { ...props, ...enhancedProps }
+}
+
 export function pickHTMLProps<P extends object>(props: P) {
   const filteredProps: Partial<P> = {};
 
@@ -97,6 +109,7 @@ export const cssProps = {
   backgroundAttachment: 'background-attachment',
   backgroundBlendMode: 'background-blend-mode',
   backgroundClip: 'background-clip',
+  bg: 'background-color',
   backgroundColor: 'background-color',
   backgroundImage: 'background-image',
   backgroundImageTransform: 'background-image-transform',
