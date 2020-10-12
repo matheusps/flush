@@ -1,0 +1,39 @@
+{
+  "name": "flush-system",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "module": "dist/base-ui.esm.js",
+  "typings": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "tsdx watch --verbose --noClean",
+    "build": "tsdx build --tsconfig tsconfig.json",
+    "test": "tsdx test",
+    "storybook": "start-storybook -p 6006 -s public"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16"
+  },
+  "dependencies": {
+    "@emotion/is-prop-valid": "^0.8.8",
+    "@theme-ui/core": "^0.4.0-rc.5",
+    "@theme-ui/css": "^0.4.0-rc.5",
+    "csstype": "^3.0.3",
+    "emotion": "^10.0.27",
+    "focus-visible": "^5.1.0",
+    "reakit": "^1.2.5",
+    "tiny-invariant": "^1.1.0",
+    "tiny-warning": "^1.0.3"
+  }
+}

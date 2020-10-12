@@ -1,0 +1,57 @@
+---
+title: Theming
+path: /theming/
+---
+
+# Theming
+
+## Global theming
+
+Bumbag can be extensively themed to meet your requirements. You can either **override the default Bumbag theme** or **create your own custom theme** from scratch. If you like the default theme and want to keep it simple, we recommend you just override the default.
+
+### Overriding the default global theme (recommended)
+
+The `<ThemeProvider>` component accepts `theme` as a prop, where you can specify overrides to the default Bumbag theme. The schema of the `theme` object can be seen [here](#theme-schema).
+
+```jsx
+import { Provider as BumbagProvider, css } from 'bumbag'
+
+const theme = {
+  global: {
+    fontSize: 18,
+    styles: {
+      base: css`
+        html,
+        body {
+          background-color: hotpink;
+          color: white;
+        }
+      `,
+    },
+  },
+  fonts: {
+    default: 'Comic Sans MS',
+  },
+  palette: {
+    primary: 'blue',
+  },
+  breakpoints: {
+    mobile: 520,
+    tablet: 960,
+  },
+  Button: {
+    defaultProps: {
+      palette: 'primary',
+    },
+  },
+  Heading: {
+    styles: {
+      base: {
+        color: 'primary',
+      },
+    },
+  },
+}
+
+const App = () => <BumbagProvider theme={theme}>// ... your app</BumbagProvider>
+```
