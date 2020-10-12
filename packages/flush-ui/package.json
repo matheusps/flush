@@ -30,6 +30,7 @@
     "focus-visible": "^5.1.0",
     "polished": "^3.6.7",
     "react-truncate": "^2.4.0",
-    "reakit": "^1.2.5"
+    "reakit": "^1.2.5",
+    "flush-system": "*"
   }
 }

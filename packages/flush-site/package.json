@@ -1,9 +1,9 @@
 {
-  "name": "basic-site",
+  "name": "flush-site",
   "description": "documentation site",
   "scripts": {
     "develop": "gatsby develop",
-    "build": "gatsby build",
+
     "clean": "gatsby clean",
     "inject-types": "node scripts/inject-types.js"
   },
