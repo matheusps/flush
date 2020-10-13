@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box as ReakitBox, BoxProps as ReakitBoxProps } from 'reakit'
+import { Input as ReakitInput, InputProps as ReakitInputProps } from 'reakit'
 import {
   SxStyleProp,
   createElement,
@@ -15,18 +15,15 @@ type ComponentType<R> = React.ComponentType<R> & { useProps: any }
 
 export type LocalBoxProps = {
   use?: string | ComponentType<any>
-  children?: React.ReactNode | ((props: BoxProps) => React.ReactNode)
-  variant?: string
+  children?: React.ReactNode | ((props: InputProps) => React.ReactNode)
   disabled?: boolean
-  elementRef?: React.Ref<any>
-  themeKey?: string
 }
-export type BoxProps = Omit<ReakitBoxProps, 'sx'> &
+export type InputProps = Omit<ReakitInputProps, 'sx'> &
   LocalBoxProps & { sx?: SxStyleProp }
 
-function useProps(props: BoxProps) {
+function useProps(props: InputProps) {
   const compoundProps = compose(props)
-  const className = useCx(compoundProps)
+  const className = useCx({ ...compoundProps, themeKey: 'of-input' })
   const htmlProps = omitCSSProps(pickHTMLProps(compoundProps))
 
   const ref = compoundProps.elementRef ?? {
@@ -40,20 +37,20 @@ function useProps(props: BoxProps) {
   return { ...htmlProps, className, ...ref, ...wrapElement }
 }
 
-export const Box = createComponent<BoxProps>(
+export const Input = createComponent<InputProps>(
   (props, ref) => {
-    const boxProps = useProps(props)
+    const inputProps = useProps(props)
 
     return createElement({
       children: props.children,
-      component: ReakitBox,
+      component: ReakitInput,
       use: props.use,
-      htmlProps: boxProps,
+      htmlProps: inputProps,
       ref,
     })
   },
   {
-    assign: { displayName: 'Box', useProps },
+    assign: { displayName: 'Input', useProps },
     memoize: false,
   }
 )

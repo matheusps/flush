@@ -9,6 +9,7 @@
     "node": ">=10.13.0"
   },
   "scripts": {
+    "start": "lerna run start",
     "build": "lerna run build",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
