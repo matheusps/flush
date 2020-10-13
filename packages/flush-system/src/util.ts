@@ -76,7 +76,16 @@ export function mergeRefs(...refs: Array<React.Ref<any> | undefined>) {
   };
 }
 
-export const cssProps = {
+export const renameKeys = (keysMap, obj) =>
+  Object.keys(obj).reduce(
+    (acc, key) => ({
+      ...acc,
+      ...{ [keysMap[key] || key]: obj[key] },
+    }),
+    {}
+  )
+
+export const cssEventProps = {
   _hover: ':hover',
   _hoveractive: ':hover:active',
   _focus: ':focus',
@@ -88,9 +97,30 @@ export const cssProps = {
   _groupFocus: '[role=group]:focus &',
   _groupVisited: '[role=group]:visited &',
   _groupDisabled: '[role=group]:disabled &',
+}
+
+export const flexBox = {
+  // direction: 'flexDirection',
+  // justify: 'justifyContent',
+  // items: 'alignItems',
   alignContent: 'align-content',
   alignSelf: 'align-self',
   alignItems: 'align-items',
+  justifyContent: 'justify-content',
+  justifyItems: 'justify-items',
+  justifySelf: 'justify-self',
+  flex: 'flex',
+  flexBasis: 'flex-basis',
+  flexDirection: 'flex-direction',
+  flexFlow: 'flex-flow',
+  flexGrow: 'flex-grow',
+  flexShrink: 'flex-shrink',
+  flexWrap: 'flex-wrap',
+}
+
+export const cssProps = {
+  ...cssEventProps,
+  ...flexBox,
   alignmentBaseline: 'alignment-baseline',
   all: 'all',
   animation: 'animation',
@@ -243,13 +273,6 @@ export const cssProps = {
   fillRule: 'fill-rule',
   fillSize: 'fill-size',
   filter: 'filter',
-  flex: 'flex',
-  flexBasis: 'flex-basis',
-  flexDirection: 'flex-direction',
-  flexFlow: 'flex-flow',
-  flexGrow: 'flex-grow',
-  flexShrink: 'flex-shrink',
-  flexWrap: 'flex-wrap',
   float: 'float',
   floatDefer: 'float-defer',
   floatOffset: 'float-offset',
@@ -327,9 +350,6 @@ export const cssProps = {
   insetInlineEnd: 'inset-inline-end',
   insetInlineStart: 'inset-inline-start',
   isolation: 'isolation',
-  justifyContent: 'justify-content',
-  justifyItems: 'justify-items',
-  justifySelf: 'justify-self',
   left: 'left',
   letterSpacing: 'letter-spacing',
   lightingColor: 'lighting-color',

@@ -1,32 +1,40 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import { Box } from './index'
 import { ThemeProvider } from 'flush-system'
+import { base } from 'flush-themes'
+import { Input } from '../Input'
 
 export default {
   title: 'flush-ui/box',
 } as Meta
 
 export const Basic: Story = () => {
-  return <Box>Cool Box</Box>
+  return (
+    <ThemeProvider theme={base}>
+      <Box>Cool Box</Box>
+    </ThemeProvider>
+  )
 }
 
 export const Sx: Story = () => {
   return (
-    <Box
-      sx={{
-        fontSize: 64,
-      }}
-    >
-      Huge Text
-    </Box>
+    <ThemeProvider theme={base}>
+      <Box
+        sx={{
+          fontSize: 64,
+        }}
+      >
+        Huge Text
+      </Box>
+    </ThemeProvider>
   )
 }
 
 export const ConsumeTheme: Story = () => {
   return (
-    <ThemeProvider>
+    <ThemeProvider theme={base}>
       <Box
         sx={{
           fontSize: 64,
@@ -97,9 +105,64 @@ export const CustomTheme: Story = () => {
 
 export const StyleProps: Story = () => {
   return (
-    <ThemeProvider>
+    <ThemeProvider theme={base}>
       <Box bg="primary" color="source.light" borderRadius={4} fontSize={64}>
         Primary Box
+      </Box>
+    </ThemeProvider>
+  )
+}
+
+export const Ref: Story = () => {
+  const ref = useRef(null)
+  const handleFocus = () => {
+    if (ref.current) {
+      ref.current.focus()
+    }
+  }
+  return (
+    <ThemeProvider theme={base}>
+      <Box
+        ref={ref}
+        borderRadius={4}
+        borderStyle="solid"
+        fontSize={18}
+        use="input"
+        type="text"
+      />
+      <button onClick={handleFocus}>Focus</button>
+    </ThemeProvider>
+  )
+}
+
+export const FullUse: Story = () => {
+  const ref = useRef(null)
+  const handleFocus = () => {
+    if (ref.current) {
+      ref.current.focus()
+    }
+  }
+  return (
+    <ThemeProvider theme={base}>
+      <Box
+        ref={ref}
+        borderRadius={4}
+        borderStyle="solid"
+        fontSize={18}
+        use={Input}
+        type="text"
+      />
+      <button onClick={handleFocus}>Focus</button>
+    </ThemeProvider>
+  )
+}
+
+export const Flexbox: Story = () => {
+  return (
+    <ThemeProvider theme={base}>
+      <Box display="flex" width="100%" direction="column">
+        <Box width="20%" height={120} bg="primary" />
+        <Box width="20%" height={120} bg="secondary" />
       </Box>
     </ThemeProvider>
   )

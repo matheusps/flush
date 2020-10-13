@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Ref } from 'react'
 
 import { isFunction } from './util'
 
@@ -8,6 +8,7 @@ type Props = {
   enableRenderPropsComposition?: boolean
   use?: string | React.ComponentType<any>
   htmlProps: any
+  ref?: Ref<any>
 }
 
 export function createElement({
@@ -16,13 +17,14 @@ export function createElement({
   enableRenderPropsComposition = true,
   htmlProps,
   use,
+  ref,
 }: Props) {
   if (enableRenderPropsComposition && isFunction(children)) {
     return children(htmlProps)
   }
   return React.createElement(
     component,
-    { as: use, ...htmlProps },
+    { as: use, ...htmlProps, ref },
     htmlProps.children || children
   )
 }

@@ -1,36 +1,27 @@
-import { forwardRef, createElement, memo } from 'react'
+import { forwardRef, memo, FunctionComponentElement } from 'react'
 
 export function createComponent<Props>(
-  Component: React.FunctionComponent<Props>,
+  Component: (
+    props: React.PropsWithChildren<Props>,
+    ref: React.Ref<any>
+  ) => FunctionComponentElement<Props>,
   config?: {
-    attach?: {
+    assign?: {
       displayName?: string
       useProps: (
         props?: Partial<Props>,
-        config?: { disableCSSProps?: Array<string>; themeKey?: string }
+        config?: { disableCSSProps?: Array<string> }
       ) => any
     }
     defaultProps?: Partial<Props>
-    themeKey?: string
     memoize?: boolean
   }
 ): any {
-  const FlushComponent = (
-    props: React.PropsWithChildren<Props>,
-    ref: React.Ref<any>
-  ) => {
-    return createElement(
-      Component,
-      { ...props, elementRef: ref },
-      props?.children
-    )
-  }
-
-  let ForwardedFlushComponent = forwardRef(FlushComponent)
+  let FlushComponent = forwardRef(Component)
 
   if (config.memoize) {
-    ForwardedFlushComponent = memo(ForwardedFlushComponent)
+    FlushComponent = memo(FlushComponent)
   }
 
-  return Object.assign(ForwardedFlushComponent, config.attach)
+  return Object.assign(FlushComponent, config.assign)
 }
