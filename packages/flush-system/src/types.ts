@@ -1,1 +1,0 @@
-export { SxStyleProp } from '@theme-ui/core'
